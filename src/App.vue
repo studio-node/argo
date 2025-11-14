@@ -2,6 +2,7 @@
 import { ref, onMounted, onBeforeUnmount, provide, readonly, computed } from 'vue'
 import NearbyMap from '@/components/NearbyMap.vue'
 import splashVideo from '@/assets/animatedlogo.mp4'
+import argoLogo from '@/assets/LogoWordmark.png'
 
 const showSplash = ref(true)
 const locationStatus = ref('idle')
@@ -123,9 +124,11 @@ provide('locationError', readonly(locationError))
 
     <main v-if="!showSplash" class="app-shell">
       <header class="app-header">
-        <div>
-          <p class="eyebrow">Location aware</p>
-          <h1>Find nearby experiences</h1>
+        <div class="header-intro">
+          <img :src="argoLogo" alt="Argo logo" class="argo-logo" />
+          <div>
+            <h1>Code Camp Experience</h1>
+          </div>
         </div>
         <button class="retry-btn" @click="requestLocation">Refresh</button>
       </header>
@@ -172,7 +175,7 @@ provide('locationError', readonly(locationError))
   flex-direction: column;
   align-items: center;
   justify-content: center;
-  background: #ffffff;
+  background: #E7ECEF;
   color: #0f172a;
   z-index: 40;
 }
@@ -211,6 +214,18 @@ provide('locationError', readonly(locationError))
   align-items: flex-start;
   justify-content: space-between;
   gap: 1rem;
+}
+
+.header-intro {
+  display: flex;
+  align-items: center;
+  gap: 0.85rem;
+}
+
+.argo-logo {
+  width: 72px;
+  height: 72px;
+  object-fit: contain;
 }
 
 .eyebrow {

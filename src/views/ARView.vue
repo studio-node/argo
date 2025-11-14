@@ -1,6 +1,5 @@
 <script setup>
-import { ref, onMounted, onUnmounted } from 'vue'
-import { useRouter } from 'vue-router'
+import { ref, onMounted } from 'vue'
 import { useAuth } from '@/composables/useAuth'
 import ARViewer from '@/components/ar/ARViewer.vue'
 import PlacementControls from '@/components/ar/PlacementControls.vue'
@@ -12,7 +11,6 @@ const props = defineProps({
   }
 })
 
-const router = useRouter()
 const { isAuthenticated } = useAuth()
 const selectedModel = ref(null)
 const placementMode = ref(false)
@@ -62,12 +60,16 @@ const handleClearSelection = () => {
 const handleVPSLocationDetected = (location) => {
   console.log('VPS Location detected:', location)
 }
+
+const goHome = () => {
+  window.location.href = '/'
+}
 </script>
 
 <template>
   <div class="ar-view">
     <div class="ar-header">
-      <button @click="router.push('/')" class="back-btn">← Back</button>
+      <button @click="goHome" class="back-btn">← Back</button>
       <div class="header-actions">
         <router-link v-if="!selectedModel" to="/models" class="models-btn">
           Select Model
@@ -161,4 +163,3 @@ const handleVPSLocationDetected = (location) => {
   background: #0056b3;
 }
 </style>
-

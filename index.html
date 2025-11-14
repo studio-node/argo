@@ -31,6 +31,11 @@
         display: flex;
         justify-content: center;
         padding: clamp(16px, 4vw, 72px);
+        transition: padding 0.25s ease;
+      }
+
+      body:not(.show-landing) {
+        padding: 0;
       }
 
       .app-shell {
@@ -45,32 +50,393 @@
         padding: clamp(24px, 6vw, 48px);
         display: flex;
         flex-direction: column;
-        align-items: center;
-        justify-content: center;
-        text-align: center;
-        gap: 1rem;
+        gap: 1.5rem;
       }
 
-      .landing-eyebrow {
-        letter-spacing: 0.2em;
-        text-transform: uppercase;
-        font-size: 0.75rem;
-        color: rgba(15, 23, 42, 0.55);
-        margin: 0;
-      }
-
-      .landing-title {
-        font-size: clamp(2.5rem, 8vw, 3.5rem);
-        margin: 0;
-      }
-
-      .landing-copy {
-        margin: 0;
-        color: rgba(15, 23, 42, 0.7);
+      body:not(.show-landing) .app-shell {
+        display: none;
       }
 
       #app {
+        width: 100%;
+        min-height: 100vh;
         display: none;
+      }
+
+      body:not(.show-landing) #app {
+        display: block;
+      }
+
+      .landing-nav {
+        width: 100%;
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        padding-bottom: 0.75rem;
+        border-bottom: 1px solid rgba(148, 163, 184, 0.35);
+      }
+
+      .nav-brand {
+        font-size: 1rem;
+        letter-spacing: 0.2em;
+        text-transform: uppercase;
+        color: rgba(15, 23, 42, 0.65);
+      }
+
+      .nav-links {
+        display: flex;
+        gap: 0.75rem;
+      }
+
+      .nav-link {
+        border: none;
+        background: transparent;
+        text-decoration: none;
+        font-weight: 600;
+        color: rgba(15, 23, 42, 0.65);
+        padding: 0.35rem 0.9rem;
+        border-radius: 999px;
+        transition: background 0.2s ease, color 0.2s ease;
+      }
+
+      .nav-link:hover,
+      .nav-link:focus-visible {
+        background: rgba(148, 163, 184, 0.15);
+        color: #0f172a;
+      }
+
+      .nav-link.is-active {
+        background: #0f172a;
+        color: white;
+      }
+
+      .view-panel {
+        display: flex;
+        flex-direction: column;
+        gap: 1.25rem;
+      }
+
+      .view-panel[hidden] {
+        display: none;
+      }
+
+      .map-experience {
+        width: 100%;
+        min-height: clamp(480px, 65vh, 780px);
+        background: #e7ecef;
+        padding: clamp(1.25rem, 4vw, 2.5rem);
+        display: grid;
+        grid-template-columns: minmax(0, 1.1fr) minmax(0, 0.9fr);
+        gap: clamp(1.25rem, 4vw, 2.5rem);
+        border-radius: 24px;
+        border: 1px solid rgba(148, 163, 184, 0.35);
+        box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.5);
+      }
+
+      .panel-header {
+        margin-bottom: 1.5rem;
+      }
+
+      .panel-header.compact {
+        margin-bottom: 1rem;
+      }
+
+      .eyebrow {
+        letter-spacing: 0.2em;
+        text-transform: uppercase;
+        font-size: 0.7rem;
+        color: rgba(15, 23, 42, 0.6);
+        margin-bottom: 0.35rem;
+      }
+
+      .panel-subtitle,
+      .lede {
+        color: rgba(15, 23, 42, 0.7);
+        max-width: 420px;
+      }
+
+      .map-panel,
+      .locations-panel {
+        background: white;
+        border-radius: 28px;
+        padding: clamp(1.25rem, 3vw, 2rem);
+        box-shadow: 0 30px 90px rgba(15, 23, 42, 0.1);
+        border: 1px solid rgba(148, 163, 184, 0.2);
+      }
+
+      .map-canvas {
+        position: relative;
+        height: clamp(320px, 45vw, 520px);
+        border-radius: 24px;
+        overflow: hidden;
+        background: radial-gradient(circle at 25% 25%, rgba(59, 130, 246, 0.2), transparent 45%),
+          radial-gradient(circle at 70% 60%, rgba(14, 165, 233, 0.25), transparent 50%),
+          #f5f7fa;
+        border: 1px solid rgba(148, 163, 184, 0.3);
+      }
+
+      .map-grid {
+        position: absolute;
+        inset: 0;
+        background-image: linear-gradient(to right, rgba(148, 163, 184, 0.25) 1px, transparent 1px),
+          linear-gradient(to bottom, rgba(148, 163, 184, 0.25) 1px, transparent 1px);
+        background-size: 40px 40px;
+      }
+
+      .map-ring {
+        position: absolute;
+        border-radius: 50%;
+        border: 1px solid rgba(37, 99, 235, 0.2);
+        left: 50%;
+        top: 50%;
+        transform: translate(-50%, -50%);
+      }
+
+      .ring-one {
+        width: 40%;
+        height: 40%;
+      }
+
+      .ring-two {
+        width: 65%;
+        height: 65%;
+      }
+
+      .ring-three {
+        width: 90%;
+        height: 90%;
+      }
+
+      .map-pin {
+        position: absolute;
+        width: 32px;
+        height: 32px;
+        border-radius: 50%;
+        border: none;
+        cursor: pointer;
+        background: rgba(59, 130, 246, 0.12);
+        transform: translate(-50%, -50%);
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        transition: transform 0.2s ease, background 0.2s ease;
+      }
+
+      .map-pin span {
+        width: 12px;
+        height: 12px;
+        border-radius: 50%;
+        background: #2563eb;
+        box-shadow: 0 0 0 6px rgba(37, 99, 235, 0.2);
+      }
+
+      .map-pin:hover {
+        transform: translate(-50%, -50%) scale(1.1);
+        background: rgba(59, 130, 246, 0.2);
+      }
+
+      .location-chip {
+        margin-top: 1rem;
+        padding: 0.75rem 1rem;
+        border-radius: 999px;
+        background: rgba(59, 130, 246, 0.08);
+        color: #0f172a;
+        font-size: 0.9rem;
+        display: inline-flex;
+        align-items: center;
+        gap: 0.25rem;
+      }
+
+      .location-list {
+        list-style: none;
+        display: flex;
+        flex-direction: column;
+        gap: 0.75rem;
+        padding: 0;
+        margin: 0;
+      }
+
+      .location-card__body {
+        width: 100%;
+        text-align: left;
+        padding: 1rem 1.25rem;
+        border-radius: 20px;
+        border: 1px solid rgba(148, 163, 184, 0.3);
+        background: linear-gradient(135deg, rgba(15, 23, 42, 0.02), rgba(15, 23, 42, 0.07));
+        display: flex;
+        justify-content: space-between;
+        gap: 1rem;
+        cursor: pointer;
+        transition: transform 0.2s ease, box-shadow 0.2s ease;
+      }
+
+      .location-card__body:hover {
+        transform: translateY(-2px);
+        box-shadow: 0 18px 40px rgba(15, 23, 42, 0.12);
+      }
+
+      .location-card__copy h3 {
+        font-size: 1.1rem;
+        margin-bottom: 0.25rem;
+      }
+
+      .location-card__copy p {
+        color: rgba(15, 23, 42, 0.7);
+        font-size: 0.95rem;
+      }
+
+      .location-card__meta {
+        font-size: 0.85rem;
+        color: rgba(15, 23, 42, 0.55);
+        margin-bottom: 0.2rem;
+      }
+
+      .location-card__cta {
+        align-self: center;
+        font-weight: 600;
+        color: #2563eb;
+      }
+
+      .location-modal {
+        position: fixed;
+        inset: 0;
+        background: rgba(15, 23, 42, 0.55);
+        display: none;
+        align-items: center;
+        justify-content: center;
+        padding: 1.5rem;
+        z-index: 50;
+      }
+
+      .location-modal.is-visible {
+        display: flex;
+      }
+
+      .modal-card {
+        background: white;
+        width: min(420px, 90vw);
+        border-radius: 28px;
+        padding: 1.5rem;
+        position: relative;
+        box-shadow: 0 40px 80px rgba(15, 23, 42, 0.4);
+        display: flex;
+        flex-direction: column;
+        gap: 1.25rem;
+      }
+
+      .close-btn {
+        position: absolute;
+        top: 1rem;
+        right: 1rem;
+        border: none;
+        background: transparent;
+        font-size: 1.5rem;
+        cursor: pointer;
+        color: rgba(15, 23, 42, 0.6);
+      }
+
+      .image-frame {
+        width: 100%;
+        border-radius: 20px;
+        border: 1px dashed rgba(148, 163, 184, 0.6);
+        height: 200px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        color: rgba(15, 23, 42, 0.5);
+        font-size: 0.95rem;
+        background: #f8fafc;
+      }
+
+      .modal-description {
+        color: rgba(15, 23, 42, 0.75);
+        line-height: 1.5;
+      }
+
+      .explore-btn {
+        width: 100%;
+        border: none;
+        border-radius: 999px;
+        padding: 0.85rem 1rem;
+        background: linear-gradient(135deg, #22d3ee, #818cf8);
+        color: #0f172a;
+        font-weight: 600;
+        font-size: 1rem;
+        cursor: pointer;
+        transition: transform 0.2s ease, box-shadow 0.2s ease;
+      }
+
+      .explore-btn:hover:not(:disabled) {
+        transform: translateY(-1px);
+        box-shadow: 0 25px 45px rgba(129, 140, 248, 0.35);
+      }
+
+      .explore-btn:disabled {
+        opacity: 0.7;
+        cursor: progress;
+      }
+
+      .settings-panel {
+        width: 100%;
+        background: #f8fafc;
+        border-radius: 24px;
+        padding: clamp(1.5rem, 4vw, 2.5rem);
+        border: 1px solid rgba(148, 163, 184, 0.3);
+        box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.6);
+        display: flex;
+        flex-direction: column;
+        gap: 1.5rem;
+      }
+
+      .settings-list {
+        list-style: none;
+        display: flex;
+        flex-direction: column;
+        gap: 1rem;
+        padding: 0;
+        margin: 0;
+      }
+
+      .settings-card {
+        display: flex;
+        justify-content: space-between;
+        gap: 1rem;
+        padding: clamp(1rem, 2vw, 1.5rem);
+        border-radius: 18px;
+        border: 1px solid rgba(148, 163, 184, 0.35);
+        background: white;
+        align-items: center;
+      }
+
+      .settings-card h2 {
+        font-size: 1.1rem;
+        margin-bottom: 0.35rem;
+      }
+
+      .settings-card p {
+        margin: 0;
+        color: rgba(15, 23, 42, 0.65);
+      }
+
+      .settings-card button {
+        border: none;
+        border-radius: 999px;
+        padding: 0.55rem 1.25rem;
+        background: #0f172a;
+        color: white;
+        font-weight: 600;
+        cursor: pointer;
+      }
+
+      #startup-frame {
+        width: min(calc(var(--mobile-frame-width) - 64px), 80vw);
+        aspect-ratio: 9 / 16;
+        border-radius: 32px;
+        border: 1px solid rgba(148, 163, 184, 0.35);
+        padding: 0;
+        overflow: hidden;
+        box-shadow: 0 25px 60px rgba(15, 23, 42, 0.2);
+        background: #e7ecef;
       }
 
       #startup-animation {
@@ -79,11 +445,7 @@
         display: flex;
         justify-content: center;
         align-items: center;
-        background: radial-gradient(
-          circle at top,
-          rgba(231, 236, 239, 0.95),
-          #e7ecef
-        );
+        background: radial-gradient(circle at top, rgba(231, 236, 239, 0.95), #e7ecef);
         transition: opacity 0.6s ease;
         z-index: 10;
       }
@@ -108,80 +470,440 @@
         pointer-events: none;
       }
 
-      #startup-frame {
-        width: min(calc(var(--mobile-frame-width) - 64px), 80vw);
-        aspect-ratio: 9 / 16;
-        display: flex;
-        border-radius: 32px;
-        border: 1px solid rgba(255, 255, 255, 0.2);
-        box-shadow: 0 25px 90px rgba(0, 0, 0, 0.4);
-        overflow: hidden;
-        background: #e7ecef;
-      }
-
-      @supports not (aspect-ratio: 9 / 16) {
-        #startup-frame::before {
-          float: left;
-          padding-top: calc(100% * 16 / 9);
-          content: "";
-        }
-        #startup-frame::after {
-          display: block;
-          content: "";
-          clear: both;
-        }
-      }
-
       #startup-animation video {
         width: 100%;
         height: 100%;
         object-fit: contain;
         background: #e7ecef;
       }
+
+      .startup-credit {
+        position: absolute;
+        bottom: clamp(32px, 6vh, 56px);
+        width: 100%;
+        text-align: center;
+        font-size: 0.85rem;
+        letter-spacing: 0.12em;
+        text-transform: uppercase;
+        color: rgba(15, 23, 42, 0.6);
+      }
+
+      @media (max-width: 1024px) {
+        .map-experience {
+          grid-template-columns: 1fr;
+        }
+      }
+
+      @media (max-width: 640px) {
+        body {
+          padding: 16px;
+        }
+
+        .map-panel,
+        .locations-panel,
+        .settings-panel {
+          padding: 1rem;
+        }
+
+        .map-canvas {
+          height: 320px;
+        }
+
+        .location-card__body {
+          flex-direction: column;
+        }
+
+        .location-card__cta {
+          align-self: flex-start;
+        }
+
+        .settings-card {
+          flex-direction: column;
+          align-items: flex-start;
+        }
+
+        .settings-card button {
+          width: 100%;
+          text-align: center;
+        }
+      }
     </style>
   </head>
   <body>
     <div id="startup-animation">
       <div id="startup-frame">
-        <video
-          id="startup-video"
-          src="/src/assets/animatedlogo.mp4"
-          autoplay
-          muted
-          playsinline
-        ></video>
+        <video id="startup-video" autoplay muted playsinline>
+          <source src="/src/assets/LogoWordmarkTransparent.mov" type="video/quicktime" />
+          <source src="/src/assets/animatedlogo.mp4" type="video/mp4" />
+          Your browser does not support the intro video.
+        </video>
+      </div>
+      <p class="startup-credit">Powered by Studio Node</p>
+    </div>
+    <div class="app-shell" aria-live="polite">
+      <nav class="landing-nav" aria-label="Primary">
+        <span class="nav-brand">AR Studio</span>
+        <div class="nav-links">
+          <a href="/experiences" class="nav-link" data-nav="experiences">Experiences</a>
+          <a href="/settings" class="nav-link" data-nav="settings">Settings</a>
+        </div>
+      </nav>
+      <section class="view-panel" data-view="experiences">
+        <div class="map-experience">
+          <section class="map-panel">
+            <header class="panel-header">
+              <p class="eyebrow">City Explorer</p>
+              <h1>Choose a launch point.</h1>
+              <p class="panel-subtitle">
+                Tap a beacon on the map or pick from the list to preview a scripted drop.
+              </p>
+            </header>
+            <div class="map-canvas" aria-label="Mock map">
+              <div class="map-grid"></div>
+              <div class="map-ring ring-one"></div>
+              <div class="map-ring ring-two"></div>
+              <div class="map-ring ring-three"></div>
+              <button
+                class="map-pin"
+                style="left: 24%; top: 46%"
+                data-location-trigger
+                data-location-id="pier-27"
+                aria-label="Preview Pier 27 Launchpad"
+              >
+                <span></span>
+              </button>
+              <button
+                class="map-pin"
+                style="left: 62%; top: 38%"
+                data-location-trigger
+                data-location-id="rooftop-garden"
+                aria-label="Preview Sky Garden Observatory"
+              >
+                <span></span>
+              </button>
+              <button
+                class="map-pin"
+                style="left: 48%; top: 72%"
+                data-location-trigger
+                data-location-id="market-square"
+                aria-label="Preview Market Square Portal"
+              >
+                <span></span>
+              </button>
+              <button
+                class="map-pin"
+                style="left: 78%; top: 28%"
+                data-location-trigger
+                data-location-id="museum-walk"
+                aria-label="Preview Museum Walk Chronicle"
+              >
+                <span></span>
+              </button>
+            </div>
+            <div class="location-chip">
+              Nearest live node engages when AR launches.
+            </div>
+          </section>
+
+          <section class="locations-panel">
+            <div class="panel-header compact">
+              <p class="eyebrow">Nearby drops</p>
+              <h2>Mock locations</h2>
+            </div>
+            <ul class="location-list">
+              <li class="location-card">
+                <button
+                  class="location-card__body"
+                  type="button"
+                  data-location-trigger
+                  data-location-id="pier-27"
+                >
+                  <div class="location-card__copy">
+                    <p class="location-card__meta">0.2 mi · Every 15 min</p>
+                    <h3>Pier 27 Launchpad</h3>
+                    <p>Immersive waterfront AR moment.</p>
+                  </div>
+                  <span class="location-card__cta">Details →</span>
+                </button>
+              </li>
+              <li class="location-card">
+                <button
+                  class="location-card__body"
+                  type="button"
+                  data-location-trigger
+                  data-location-id="rooftop-garden"
+                >
+                  <div class="location-card__copy">
+                    <p class="location-card__meta">0.6 mi · Opens 6 pm</p>
+                    <h3>Sky Garden Observatory</h3>
+                    <p>Guided path through the rooftop canopy.</p>
+                  </div>
+                  <span class="location-card__cta">Details →</span>
+                </button>
+              </li>
+              <li class="location-card">
+                <button
+                  class="location-card__body"
+                  type="button"
+                  data-location-trigger
+                  data-location-id="market-square"
+                >
+                  <div class="location-card__copy">
+                    <p class="location-card__meta">1.1 mi · Weekends only</p>
+                    <h3>Market Square Portal</h3>
+                    <p>Portal show inside the central plaza.</p>
+                  </div>
+                  <span class="location-card__cta">Details →</span>
+                </button>
+              </li>
+              <li class="location-card">
+                <button
+                  class="location-card__body"
+                  type="button"
+                  data-location-trigger
+                  data-location-id="museum-walk"
+                >
+                  <div class="location-card__copy">
+                    <p class="location-card__meta">1.8 mi · All day</p>
+                    <h3>Museum Walk Chronicle</h3>
+                    <p>Story trail along the sculpture walk.</p>
+                  </div>
+                  <span class="location-card__cta">Details →</span>
+                </button>
+              </li>
+            </ul>
+          </section>
+        </div>
+      </section>
+
+      <section class="view-panel" data-view="settings" hidden>
+        <div class="settings-panel">
+          <header>
+            <p class="eyebrow">Control center</p>
+            <h1>Settings</h1>
+            <p class="lede">
+              Keep your AR kit ready. Adjust notifications, downloads, and support preferences in one place.
+            </p>
+          </header>
+          <ul class="settings-list">
+            <li class="settings-card">
+              <div>
+                <h2>Notifications</h2>
+                <p>Receive drop alerts and arrival reminders when you are near a live scene.</p>
+              </div>
+              <button type="button">Manage</button>
+            </li>
+            <li class="settings-card">
+              <div>
+                <h2>Download options</h2>
+                <p>Cache assets on Wi-Fi only or allow cellular downloads for instant launches.</p>
+              </div>
+              <button type="button">Configure</button>
+            </li>
+            <li class="settings-card">
+              <div>
+                <h2>Support</h2>
+                <p>Get help from Studio Node or review safety guidelines before you explore.</p>
+              </div>
+              <button type="button">Open</button>
+            </li>
+          </ul>
+        </div>
+      </section>
+    </div>
+
+    <div
+      id="location-modal"
+      class="location-modal"
+      aria-hidden="true"
+      role="dialog"
+      aria-label="Location details"
+    >
+      <div class="modal-card">
+        <button class="close-btn" type="button" data-modal-close aria-label="Close popup">
+          &times;
+        </button>
+        <div class="image-frame">
+          <span>Image placeholder</span>
+        </div>
+        <div class="modal-body">
+          <p class="eyebrow modal-eyebrow" id="modalWindowLabel">Window</p>
+          <h3 id="modalTitle">Location name</h3>
+          <p class="modal-description" id="modalDescription">
+            Description will appear here when a location is selected.
+          </p>
+        </div>
+        <button class="explore-btn" type="button" data-explore>
+          Explore
+        </button>
       </div>
     </div>
-    <div class="app-shell">
-      <p class="landing-eyebrow">AR Experience</p>
-      <h1 class="landing-title">Hi</h1>
-      <p class="landing-copy">Thanks for stopping by.</p>
-    </div>
+
     <div id="app"></div>
     <script>
       (function () {
         const splash = document.getElementById('startup-animation')
         const video = document.getElementById('startup-video')
 
-        if (!splash || !video) return
+        if (splash && video) {
+          const hideSplash = () => {
+            splash.classList.add('is-hidden')
+          }
 
-        const hideSplash = () => {
-          splash.classList.add('is-hidden')
+          video.addEventListener('ended', hideSplash, { once: true })
+
+          window.addEventListener(
+            'load',
+            () => {
+              setTimeout(() => {
+                if (!splash.classList.contains('is-hidden')) {
+                  hideSplash()
+                }
+              }, 7000)
+            },
+            { once: true }
+          )
         }
 
-        video.addEventListener('ended', hideSplash, { once: true })
+        const rawPath = window.location.pathname.replace(/\/+$/, '') || '/'
+        const landingPaths = new Set(['/', '/experiences', '/settings'])
+        const showLanding = landingPaths.has(rawPath)
+        document.body.classList.toggle('show-landing', showLanding)
 
-        window.addEventListener(
-          'load',
-          () => {
-            setTimeout(() => {
-              if (!splash.classList.contains('is-hidden')) {
-                hideSplash()
-              }
-            }, 7000)
+        const navLinks = document.querySelectorAll('[data-nav]')
+        const viewSections = document.querySelectorAll('[data-view]')
+        const locations = {
+          'pier-27': {
+            name: 'Pier 27 Launchpad',
+            window: 'Every 15 min',
+            description:
+              'Follow the animated wayfinding beacons along the pier to reveal a floating kinetic sculpture hovering over the bay.'
           },
-          { once: true }
-        )
+          'rooftop-garden': {
+            name: 'Sky Garden Observatory',
+            window: 'Opens 6 pm',
+            description:
+              'Trace glimmering light ribbons to explore the rooftop garden story. Interact with volumetric blooms that respond to your movement.'
+          },
+          'market-square': {
+            name: 'Market Square Portal',
+            window: 'Weekends only',
+            description:
+              'This drop anchors holographic characters to each market stall, revealing narratives from local makers as you move around the square.'
+          },
+          'museum-walk': {
+            name: 'Museum Walk Chronicle',
+            window: 'All day',
+            description:
+              'Scan each sculpture to unlock layered animations and spatialized narration that bring the collection to life.'
+          }
+        }
+
+        const pathToView = {
+          '/': 'experiences',
+          '/experiences': 'experiences',
+          '/settings': 'settings'
+        }
+        const viewToPath = {
+          experiences: '/experiences',
+          settings: '/settings'
+        }
+
+        let activeView = pathToView[rawPath] || 'experiences'
+
+        const updateViewUI = () => {
+          viewSections.forEach((section) => {
+            const viewName = section.getAttribute('data-view')
+            if (viewName === activeView) {
+              section.removeAttribute('hidden')
+            } else {
+              section.setAttribute('hidden', 'true')
+            }
+          })
+
+          navLinks.forEach((link) => {
+            const viewName = link.getAttribute('data-nav')
+            link.classList.toggle('is-active', viewName === activeView)
+          })
+        }
+
+        const setActiveView = (view, push) => {
+          if (activeView === view) {
+            if (push && window.location.pathname !== viewToPath[view]) {
+              window.history.pushState({ view }, '', viewToPath[view])
+            }
+            return
+          }
+
+          activeView = view
+          updateViewUI()
+          const targetPath = viewToPath[view]
+          if (push && targetPath && window.location.pathname !== targetPath) {
+            window.history.pushState({ view }, '', targetPath)
+          }
+        }
+
+        if (showLanding) {
+          updateViewUI()
+
+          navLinks.forEach((link) => {
+            link.addEventListener('click', (event) => {
+              event.preventDefault()
+              const view = link.getAttribute('data-nav')
+              setActiveView(view, true)
+            })
+          })
+
+          window.addEventListener('popstate', () => {
+            const current = window.location.pathname.replace(/\/+$/, '') || '/'
+            const nextView = pathToView[current] || 'experiences'
+            activeView = nextView
+            updateViewUI()
+          })
+
+          const modal = document.getElementById('location-modal')
+          const modalEyebrow = document.getElementById('modalWindowLabel')
+          const modalTitle = document.getElementById('modalTitle')
+          const modalDescription = document.getElementById('modalDescription')
+          const exploreBtn = modal?.querySelector('[data-explore]')
+          const closeBtn = modal?.querySelector('[data-modal-close]')
+
+          const openModal = (locationId) => {
+            const data = locations[locationId]
+            if (!modal || !data) return
+            modalEyebrow.textContent = data.window
+            modalTitle.textContent = data.name
+            modalDescription.textContent = data.description
+            modal.dataset.activeLocation = locationId
+            modal.classList.add('is-visible')
+            modal.removeAttribute('aria-hidden')
+          }
+
+          const closeModal = () => {
+            if (!modal) return
+            modal.classList.remove('is-visible')
+            modal.setAttribute('aria-hidden', 'true')
+            modal.removeAttribute('data-active-location')
+          }
+
+          document.querySelectorAll('[data-location-trigger]').forEach((trigger) => {
+            trigger.addEventListener('click', () => {
+              const locationId = trigger.getAttribute('data-location-id')
+              openModal(locationId)
+            })
+          })
+
+          closeBtn?.addEventListener('click', closeModal)
+          modal?.addEventListener('click', (event) => {
+            if (event.target === modal) {
+              closeModal()
+            }
+          })
+
+          exploreBtn?.addEventListener('click', () => {
+            window.location.href = '/ar'
+          })
+        }
       })()
     </script>
     <script type="module" src="/src/main.js"></script>

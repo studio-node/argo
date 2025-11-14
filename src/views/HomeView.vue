@@ -180,13 +180,16 @@ const exploreSelectedLocation = () => {
 
 <style scoped>
 .map-experience {
-  min-height: 100vh;
   width: 100%;
+  min-height: clamp(480px, 65vh, 780px);
   background: #e7ecef;
-  padding: clamp(1.5rem, 4vw, 3rem);
+  padding: clamp(1.25rem, 4vw, 2.5rem);
   display: grid;
   grid-template-columns: minmax(0, 1.1fr) minmax(0, 0.9fr);
-  gap: clamp(1.5rem, 4vw, 3rem);
+  gap: clamp(1.25rem, 4vw, 2.5rem);
+  border-radius: 24px;
+  border: 1px solid rgba(148, 163, 184, 0.35);
+  box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.5);
 }
 
 .panel-header {
@@ -450,4 +453,3 @@ const exploreSelectedLocation = () => {
   }
 }
 </style>
-

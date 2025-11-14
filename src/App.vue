@@ -2,23 +2,24 @@
 </script>
 
 <template>
-  <div class="container">
-    <p>Hello World!</p>
-    <p>Welcome to your Vue.js app!</p>
-  </div>
+  <router-view />
 </template>
 
-<style scoped>
-p {
-  font-size: 20px;
-  color: #333;
+<style>
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
 }
 
-.container {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
-  height: 100vh;
+body {
+  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, sans-serif;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+#app {
+  width: 100%;
+  min-height: 100vh;
 }
 </style>

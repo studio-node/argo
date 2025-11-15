@@ -1,0 +1,74 @@
+<!-- Copyright (c) 2022 8th Wall, Inc. -->
+<!-- head.html is optional; elements will be added to your html head before app.js is loaded. -->
+
+<!-- Use "8thwall:" meta tags to hook into 8th Wall's build process and developer tools. -->
+<meta name="8thwall:renderer" content="aframe:1.3.0" />
+<meta name="8thwall:package" content="@8thwall.xrextras" />
+<meta name="8thwall:package" content="@8thwall.landing-page" />
+<meta name="8thwall:package" content="@8thwall.coaching-overlay" />
+
+<!-- Other external scripts and meta tags can also be added. -->
+<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no" />
+<link
+  href="https://fonts.googleapis.com/css2?family=Noto+Sans+JP:wght@500;700&display=swap"
+  rel="stylesheet" />
+<script
+  crossorigin="anonymous"
+  src="//cdn.8thwall.com/web/aframe/aframe-extras-6.1.1.min.js"></script>
+
+<!-- <script type="module">
+  console.log('testing plase');
+  const pos = {
+    x: 1,
+    y: 1,
+    z: 1,
+  };
+  const scl = {
+    x: 0.5,
+    y: 0.5,
+    z: 0.5,
+  };
+  const placement = {
+    user_id: '6a00273c-fbd0-4854-9ac2-0027154bdb1c',
+    vps_location_id: 'b8c5b9788ba93fc3917bcd26d25481cf.16',
+    modelUrl: 'example.com',
+    position: pos,
+    rotation: {
+      // Send the quaternion
+      x: 1,
+      y: 1,
+      z: 1,
+      w: 1,
+    },
+    scale: scl,
+  };
+  async function insertPlacedObject(newObject) {
+    const response = await fetch(
+      'https://iyrjpsrdycibqptixpiu.supabase.co/rest/v1/placed_objects',
+      {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+          apikey:
+            'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Iml5cmpwc3JkeWNpYnFwdGl4cGl1Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3NjMxMzY2MTEsImV4cCI6MjA3ODcxMjYxMX0.3AjkIHzRUHChcQAixAU0bra7JfkYG7Uk4B0Ajb0Cbik',
+          Authorization:
+            'Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Iml5cmpwc3JkeWNpYnFwdGl4cGl1Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3NjMxMzY2MTEsImV4cCI6MjA3ODcxMjYxMX0.3AjkIHzRUHChcQAixAU0bra7JfkYG7Uk4B0Ajb0Cbik',
+          Prefer: 'return=representation', // returns created row
+        },
+        body: JSON.stringify(newObject),
+      }
+    );
+
+    if (!response.ok) {
+      console.error('Insert failed:', await response.text());
+      return null;
+    }
+
+    const result = await response.json();
+    console.log('Inserted:', result);
+    return result;
+  }
+
+  var res = await insertPlacedObject(placement);
+  console.log('res', res);
+</script> -->

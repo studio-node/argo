@@ -1,6 +1,6 @@
 <script setup>
 import { ref, onMounted, onBeforeUnmount } from 'vue'
-import splashVideo from '@/assets/animatedlogo.mp4'
+import splashVideo from '@/assets/LogoWordmarkAnimated(Color).mp4'
 import EightWallEmbed from '@/components/EightWallEmbed.vue'
 import AuthPage from '@/components/AuthPage.vue'
 
@@ -170,23 +170,20 @@ onBeforeUnmount(() => {
   width: 100vw;
   height: 100vh;
   display: flex;
-  flex-direction: column;
   align-items: center;
   justify-content: center;
-  background-color: #ECEEF1;
-  color: #0f172a;
+  background: #000;
   z-index: 40;
 }
 
 .post-auth {
   z-index: 30;
-  background-color: #ECEEF1;
 }
 
 .splash-video {
-  max-width: 80vw;
-  max-height: 80vh;
-  object-fit: contain;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
   pointer-events: none;
 }
 

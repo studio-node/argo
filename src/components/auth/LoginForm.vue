@@ -132,7 +132,6 @@ const handleSubmit = async () => {
   border-radius: 50px;
   display: flex;
   flex-direction: column;
-  overflow: hidden;
   text-align: center;
 }
 .signup-header {
@@ -319,10 +318,12 @@ const handleSubmit = async () => {
   .login-shell {
     border-radius: 30px;
     margin: auto;
+    min-height: auto;
   }
   
   .signup-header {
     height: 120px;
+    flex-shrink: 0;
   }
   
   .header-curve {
@@ -336,6 +337,8 @@ const handleSubmit = async () => {
   .signup-main {
     padding: 1rem 0.75rem;
     gap: 0.75rem;
+    flex: 1;
+    min-height: auto;
   }
   
   .main-heading {
@@ -393,29 +396,32 @@ const handleSubmit = async () => {
   .signup-footer {
     border-top-left-radius: 30px;
     padding: 1rem 0.75rem;
+    flex-shrink: 0;
   }
   
   .footer-content {
     gap: 8px;
-    flex-direction: column;
+    flex-direction: row;
+    align-items: center;
+    justify-content: center;
   }
   
   .footer-logo {
-    height: 60px;
+    height: 50px;
     padding-left: 0;
   }
   
   .footer-by {
-    font-size: 14px;
-    padding: 0;
+    font-size: 12px;
+    padding: 0 8px;
   }
   
   .brand-seal {
-    width: 40px;
+    width: 35px;
   }
   
   .brand-name {
-    font-size: 14px;
+    font-size: 12px;
   }
 }
 </style>

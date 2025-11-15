@@ -1,3 +1,11 @@
+<script setup>
+const emit = defineEmits(['experience-ready'])
+
+const handleLoad = () => {
+  emit('experience-ready')
+}
+</script>
+
 <template>
   <div class="embed-container">
     <iframe
@@ -5,6 +13,7 @@
       allowfullscreen
       allow="camera; microphone; geolocation; accelerometer; magnetometer; gyroscope; autoplay; clipboard-read; clipboard-write; fullscreen"
       title="8th Wall Experience"
+      @load="handleLoad"
     ></iframe>
   </div>
 </template>

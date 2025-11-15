@@ -5,8 +5,15 @@ import EightWallEmbed from '@/components/EightWallEmbed.vue'
 import AuthPage from '@/components/AuthPage.vue'
 
 const showSplash = ref(true)
+const showAuth = ref(false)
 const isAuthenticated = ref(false)
+const postAuthSplash = ref(false)
+const eightWallLoaded = ref(false)
+const postAuthVideoFinished = ref(false)
+
 const splashTimer = ref(null)
+const postAuthTimeout = ref(null)
+const postAuthDelayTimer = ref(null)
 
 const preventScroll = () => {
   document.documentElement.style.overflow = 'hidden'
@@ -18,29 +25,95 @@ const allowScroll = () => {
   document.body.style.overflow = ''
 }
 
-const hideSplash = () => {
+const hideInitialSplash = () => {
   if (!showSplash.value) return
   showSplash.value = false
   allowScroll()
+  if (!isAuthenticated.value) {
+    showAuth.value = true
+  }
 }
 
-const handleSplashEnd = () => {
-  hideSplash()
+const handleInitialSplashEnd = () => {
+  hideInitialSplash()
 }
 
 const handleAuthenticated = () => {
   isAuthenticated.value = true
+  showAuth.value = false
+}
+
+const handleAuthSuccess = () => {
+  handleAuthenticated()
+  startPostAuthSplash()
+}
+
+const startPostAuthSplash = () => {
+  postAuthSplash.value = true
+  postAuthVideoFinished.value = false
+  eightWallLoaded.value = false
+  preventScroll()
+
+  if (postAuthTimeout.value) {
+    clearTimeout(postAuthTimeout.value)
+  }
+  // fallback timeout in case iframe never loads
+  postAuthTimeout.value = window.setTimeout(() => {
+    finishPostAuthSplash()
+  }, 12000)
+}
+
+const finishPostAuthSplash = () => {
+  postAuthSplash.value = false
+  allowScroll()
+  if (postAuthTimeout.value) {
+    clearTimeout(postAuthTimeout.value)
+    postAuthTimeout.value = null
+  }
+  if (postAuthDelayTimer.value) {
+    clearTimeout(postAuthDelayTimer.value)
+    postAuthDelayTimer.value = null
+  }
+}
+
+const handleEightWallLoaded = () => {
+  eightWallLoaded.value = true
+  maybeDismissPostAuthSplash()
+}
+
+const handlePostAuthVideoEnd = () => {
+  postAuthVideoFinished.value = true
+  maybeDismissPostAuthSplash()
+}
+
+const maybeDismissPostAuthSplash = () => {
+  if (
+    eightWallLoaded.value &&
+    postAuthVideoFinished.value &&
+    !postAuthDelayTimer.value &&
+    postAuthSplash.value
+  ) {
+    postAuthDelayTimer.value = window.setTimeout(() => {
+      finishPostAuthSplash()
+    }, 2500) // wait a little longer even after video finishes
+  }
 }
 
 onMounted(() => {
   preventScroll()
-  splashTimer.value = window.setTimeout(hideSplash, 5000)
+  splashTimer.value = window.setTimeout(hideInitialSplash, 5000)
 })
 
 onBeforeUnmount(() => {
   allowScroll()
   if (splashTimer.value) {
     clearTimeout(splashTimer.value)
+  }
+  if (postAuthTimeout.value) {
+    clearTimeout(postAuthTimeout.value)
+  }
+  if (postAuthDelayTimer.value) {
+    clearTimeout(postAuthDelayTimer.value)
   }
 })
 </script>
@@ -55,17 +128,29 @@ onBeforeUnmount(() => {
           muted
           playsinline
           class="splash-video"
-          @ended="handleSplashEnd"
+          @ended="handleInitialSplashEnd"
         ></video>
       </section>
     </transition>
 
-    <section v-if="!showSplash && !isAuthenticated" class="auth-shell">
-      <AuthPage @authenticated="handleAuthenticated" />
+    <section v-if="showAuth && !isAuthenticated" class="auth-shell">
+      <AuthPage @authenticated="handleAuthSuccess" />
     </section>
 
-    <section v-else-if="!showSplash && isAuthenticated" class="embed-shell">
-      <EightWallEmbed />
+    <section v-if="isAuthenticated" class="embed-shell">
+      <EightWallEmbed @experience-ready="handleEightWallLoaded" />
+      <transition name="splash-fade">
+        <section v-if="postAuthSplash" class="splash-screen post-auth" aria-live="polite">
+          <video
+            :src="splashVideo"
+            autoplay
+            muted
+            playsinline
+            class="splash-video"
+            @ended="handlePostAuthVideoEnd"
+          ></video>
+        </section>
+      </transition>
     </section>
   </div>
 </template>
@@ -91,6 +176,10 @@ onBeforeUnmount(() => {
   background: #E7ECEF;
   color: #0f172a;
   z-index: 40;
+}
+
+.post-auth {
+  z-index: 30;
 }
 
 .splash-video {
@@ -120,5 +209,4 @@ onBeforeUnmount(() => {
   width: 100vw;
   height: 100vh;
 }
-
 </style>

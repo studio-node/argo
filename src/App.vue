@@ -2,8 +2,10 @@
 import { ref, onMounted, onBeforeUnmount } from 'vue'
 import splashVideo from '@/assets/animatedlogo.mp4'
 import EightWallEmbed from '@/components/EightWallEmbed.vue'
+import AuthPage from '@/components/AuthPage.vue'
 
 const showSplash = ref(true)
+const isAuthenticated = ref(false)
 let splashTimer
 
 const preventScroll = () => {
@@ -24,6 +26,10 @@ const hideSplash = () => {
 
 const handleSplashEnd = () => {
   hideSplash()
+}
+
+const handleAuthenticated = () => {
+  isAuthenticated.value = true
 }
 
 onMounted(() => {
@@ -54,7 +60,11 @@ onBeforeUnmount(() => {
       </section>
     </transition>
 
-    <section v-if="!showSplash" class="embed-shell">
+    <section v-if="!showSplash && !isAuthenticated" class="auth-shell">
+      <AuthPage @authenticated="handleAuthenticated" />
+    </section>
+
+    <section v-if="!showSplash && isAuthenticated" class="embed-shell">
       <EightWallEmbed />
     </section>
   </div>
@@ -104,5 +114,10 @@ onBeforeUnmount(() => {
   width: 100vw;
   height: 100vh;
   overflow: hidden;
+}
+
+.auth-shell {
+  width: 100vw;
+  height: 100vh;
 }
 </style>

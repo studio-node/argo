@@ -114,7 +114,10 @@ const handleSubmit = async () => {
 <style scoped>
 /* STYLES ARE IDENTICAL TO THE SIGNUP PAGE FOR VISUAL CONSISTENCY */
 @import url('https://fonts.googleapis.com/css2?family=Fredoka:wght@400;500;600&display=swap');
-*, *::before, *::after { box-sizing: border-box; }
+*, *::before, *::after { 
+  box-sizing: border-box;
+  font-family: 'Fredoka', sans-serif;
+}
 .login-page {
   min-height: 100vh;
   margin: 0;
@@ -225,6 +228,7 @@ const handleSubmit = async () => {
 .error-message {
   color: #feb2b2;
   font-size: 1rem;
+  font-family: 'Fredoka', sans-serif;
 }
 .form-button {
   width: 100%;
@@ -237,6 +241,7 @@ const handleSubmit = async () => {
   color: #212023;
   font-size: 32px;
   font-weight: 500;
+  font-family: 'Fredoka', sans-serif;
   display: flex;
   align-items: center;
   justify-content: center;
@@ -281,14 +286,13 @@ const handleSubmit = async () => {
 }
 .footer-logo {
   height: 180px;
-  padding-left: 60px;
+  padding-left: 0;
 }
 .footer-by {
   color: #E6ECEF;
   font-size: 40px;
   font-weight: 500;
-  padding-right: 40px;
-  padding-left: 15px;
+  padding: 0;
 }
 .footer-brand {
   display: flex;
@@ -406,6 +410,7 @@ const handleSubmit = async () => {
     flex-direction: row;
     align-items: center;
     justify-content: center;
+    width: 100%;
   }
   
   .footer-logo {
@@ -416,6 +421,13 @@ const handleSubmit = async () => {
   .footer-by {
     font-size: 12px;
     padding: 0 8px;
+    margin-right: 12px
+  }
+  
+  .footer-brand {
+    display: flex;
+    align-items: center;
+    gap: 8px;
   }
   
   .brand-seal {

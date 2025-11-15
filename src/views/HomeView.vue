@@ -76,30 +76,33 @@ const openArView = (dropId) => {
   display: flex;
   flex-direction: column;
   gap: 1.25rem;
+  color: #f5f5f7;
 }
 
 .home-header {
-  background: rgba(15, 23, 42, 0.04);
+  background: rgba(255, 255, 255, 0.04);
   border-radius: 20px;
   padding: 1rem 1.25rem;
+  border: 1px solid rgba(255, 255, 255, 0.08);
 }
 
 .microcopy {
   font-size: 0.75rem;
   letter-spacing: 0.18em;
   text-transform: uppercase;
-  color: rgba(15, 23, 42, 0.55);
+  color: rgba(248, 249, 252, 0.6);
 }
 
 .coordinate {
   font-size: 1.125rem;
   font-weight: 600;
   margin-top: 0.35rem;
+  color: #fdfdff;
 }
 
 .error-text {
   margin-top: 0.35rem;
-  color: #b91c1c;
+  color: #feb2b2;
   font-size: 0.9rem;
 }
 
@@ -114,8 +117,8 @@ const openArView = (dropId) => {
 
 .drop-card {
   border-radius: 20px;
-  border: 1px solid rgba(148, 163, 184, 0.35);
-  background: white;
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  background: #2f2e33;
   padding: 1rem 1.25rem;
   display: flex;
   justify-content: space-between;
@@ -125,19 +128,20 @@ const openArView = (dropId) => {
 
 .drop-card h3 {
   margin: 0.35rem 0 0.2rem;
+  color: #f9f7ff;
 }
 
 .drop-card p {
   margin: 0;
-  color: rgba(15, 23, 42, 0.7);
+  color: rgba(248, 249, 252, 0.7);
 }
 
 .ghost-btn {
   border: none;
   border-radius: 999px;
   padding: 0.45rem 1rem;
-  background: rgba(15, 23, 42, 0.07);
-  color: #0f172a;
+  background: rgba(255, 255, 255, 0.08);
+  color: #f4f4f8;
   font-weight: 600;
   cursor: pointer;
 }

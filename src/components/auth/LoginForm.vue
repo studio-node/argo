@@ -1,156 +1,309 @@
-<script setup>
-import { ref } from 'vue'
-import { useAuth } from '@/composables/useAuth'
-
-const emit = defineEmits(['success', 'switch-to-signup'])
-
-const email = ref('')
-const password = ref('')
-const { signIn, loading, error } = useAuth()
-
-const handleSubmit = async () => {
-  const { user, error: err } = await signIn(email.value, password.value)
-  if (user && !err) {
-    emit('success')
-  }
-}
-</script>
-
 <template>
-  <div class="auth-panel">
-    <header>
-      <h1>Welcome Back</h1>
-      <p>Sign in to continue.</p>
-    </header>
+  <div class="login-page">
+    <div class="login-shell">
+      <!-- ======================= -->
+      <!-- ==     Header        == -->
+      <!-- ======================= -->
+      <header class="signup-header">
+        <div class="header-curve"></div>
+        <div class="header-logo-container">
+          <img class="header-logo" src="@/assets/codecamp.png" alt="CodeCamp Logo" />
+        </div>
+      </header>
 
-    <form @submit.prevent="handleSubmit" novalidate>
-      <label>
-        <span>Email</span>
-        <input
-          v-model="email"
-          type="email"
-          inputmode="email"
-          placeholder="you@email.com"
-          required
-        />
-      </label>
-      <label>
-        <span>Password</span>
-        <input
-          v-model="password"
-          type="password"
-          placeholder="••••••••"
-          required
-        />
-      </label>
+      <!-- ======================= -->
+      <!-- ==   Main Content    == -->
+      <!-- ======================= -->
+      <main class="signup-main">
+        <h1 class="main-heading">Log In</h1>
+        <p class="main-subtitle">Welcome back! Please log in to continue.</p>
 
-      <p v-if="error" class="error">{{ error }}</p>
-      
-      <button class="primary-action" type="submit" :disabled="loading">
-        {{ loading ? 'Logging in...' : 'Log In' }}
-      </button>
-    </form>
+        <!-- Form with Vue functionality -->
+        <form class="signup-form" @submit.prevent="handleSubmit" novalidate>
+          <!-- Email -->
+          <div class="form-group">
+            <label for="email" class="form-label">Email</label>
+            <input
+              id="email"
+              v-model="email"
+              type="email"
+              class="form-input"
+              placeholder="you@email.com"
+              required
+            />
+          </div>
 
-    <p class="auth-switch">
-      <span>Need an account?</span>
-      <button type="button" @click="$emit('switch-to-signup')">
-        Sign up
-      </button>
-    </p>
+          <!-- Password -->
+          <div class="form-group">
+            <label for="password" class="form-label">Password</label>
+            <input
+              id="password"
+              v-model="password"
+              type="password"
+              class="form-input"
+              placeholder="••••••••"
+              required
+            />
+          </div>
+
+          <!-- Conditional Error Message -->
+          <p v-if="error" class="error-message">{{ error }}</p>
+
+          <!-- Dynamic Submit Button -->
+          <button type="submit" class="form-button" :disabled="loading">
+            <span class="button-text">
+              {{ loading ? 'Logging in...' : 'Log In' }}
+            </span>
+          </button>
+        </form>
+
+        <!-- Switch to Signup Prompt -->
+        <div class="login-prompt">
+          <span class="prompt-text">Don't have an account?</span>
+          <button type="button" class="prompt-link" @click="$emit('switch-to-signup')">
+            Sign Up
+          </button>
+        </div>
+      </main>
+
+      <!-- ======================= -->
+      <!-- ==      Footer       == -->
+      <!-- ======================= -->
+      <footer class="signup-footer">
+        <div class="footer-content">
+          <img class="footer-logo" src="@/assets/argologostatic.png" alt="Argo Logo" />
+          <span class="footer-by">BY</span>
+          <div class="footer-brand">
+            <img class="brand-seal" src="@/assets/studionodelogo.png" alt="Studio Node Seal" />
+            <span class="brand-name">STUDIO<br/>NODE</span>
+          </div>
+        </div>
+      </footer>
+    </div>
   </div>
 </template>
 
+<!-- SCRIPT SECTION HAS BEEN UPDATED -->
+<script setup>
+import { ref } from 'vue';
+import { useAuth } from '@/composables/useAuth'; // Ensure this path is correct
+
+const emit = defineEmits(['success', 'switch-to-signup']);
+
+// Reactive variables for the form inputs
+const email = ref('');
+const password = ref('');
+
+// ✅ CORRECT: Using "signIn" from the old component's logic
+const { signIn, loading, error } = useAuth();
+
+// ✅ CORRECT: handleSubmit now uses the "signIn" function
+const handleSubmit = async () => {
+  const { user, error: err } = await signIn(
+    email.value,
+    password.value
+  );
+
+  // If login is successful, emit the 'success' event
+  if (user && !err) {
+    emit('success');
+  }
+};
+</script>
+
 <style scoped>
-/* Styles copied directly from parkersAuthPage.vue */
-.auth-panel {
-  width: min(420px, 100%);
-  background: rgba(33, 32, 35, 0.85);
-  border: 1px solid rgba(255, 255, 255, 0.05);
-  border-radius: 28px;
-  padding: clamp(1.5rem, 4vw, 2.25rem);
-  display: flex;
-  flex-direction: column;
-  gap: 1.25rem;
-  box-shadow: 0 30px 90px rgba(0, 0, 0, 0.45);
-}
-
-header h1 {
-  margin: 0 0 0.25rem 0;
-  font-size: clamp(1.6rem, 5vw, 2rem);
-  color: #f5f5f7;
-}
-
-header p {
+/* STYLES ARE IDENTICAL TO THE SIGNUP PAGE FOR VISUAL CONSISTENCY */
+@import url('https://fonts.googleapis.com/css2?family=Fredoka:wght@400;500;600&display=swap');
+*, *::before, *::after { box-sizing: border-box; }
+.login-page {
+  min-height: 100vh;
   margin: 0;
-  color: rgba(245, 245, 247, 0.75);
+  padding: 1.5rem;
+  background: #E6ECEF;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  font-family: 'Fredoka', sans-serif;
 }
-
-form {
+.login-shell {
+  width: 100%;
+  max-width: 864px;
+  background: #E6ECEF;
+  border-radius: 50px;
   display: flex;
   flex-direction: column;
-  gap: 1rem;
+  overflow: hidden;
+  text-align: center;
 }
-
-label {
+.signup-header {
+  position: relative;
+  width: 100%;
+  height: 245px;
+}
+.header-curve {
+  position: absolute;
+  inset: 0;
+  background: #212023;
+  border-bottom-left-radius: 50px;
+}
+.header-logo-container {
+  position: relative;
+  height: 100%;
+  padding: 2rem;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+.header-logo {
+  max-width: 100%;
+  max-height: 80%;
+  object-fit: contain;
+}
+.signup-main {
+  background: #E6ECEF;
+  padding: 3rem;
   display: flex;
   flex-direction: column;
-  gap: 0.35rem;
-  font-size: 0.95rem;
-  color: rgba(245, 245, 247, 0.75);
+  align-items: center;
+  gap: 1.5rem;
 }
-
-input {
-  border-radius: 16px;
-  border: 1px solid rgba(255, 255, 255, 0.08);
-  background: rgba(255, 255, 255, 0.04);
-  padding: 0.85rem 1rem;
-  color: #f5f5f7;
+.main-heading {
+  margin: 0;
+  color: #212023;
+  font-size: 96px;
+  font-weight: 600;
+  line-height: 1.2;
+}
+.main-subtitle {
+  margin: 0;
+  color: #212023;
+  font-size: 32px;
+  font-weight: 400;
+  max-width: 600px;
+}
+.signup-form {
+  width: 100%;
+  max-width: 780px;
+  margin-top: 1rem;
+  padding: 3rem;
+  background: #212023;
+  border-radius: 50px;
+  display: flex;
+  flex-direction: column;
+  gap: 1.5rem;
+  align-items: center;
+}
+.form-group {
+  width: 100%;
+  max-width: 680px;
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+  text-align: left;
+}
+.form-label {
+  color: #E6ECEF;
+  font-size: 32px;
+  font-weight: 400;
+}
+.form-input {
+  width: 100%;
+  height: 90px;
+  border-radius: 25px;
+  border: none;
+  background: #E6ECEF;
+  padding: 0 1.5rem;
+  font-size: 24px;
+  font-family: 'Fredoka', sans-serif;
+  color: #212023;
+}
+.form-input::placeholder {
+  color: rgba(33, 32, 35, 0.5);
+}
+.form-input:focus {
+  outline: 3px solid #ffb500;
+}
+.error-message {
+  color: #feb2b2;
   font-size: 1rem;
 }
-
-input:focus {
-  outline: 2px solid rgba(255, 255, 255, 0.25);
-  outline-offset: 2px;
-}
-
-.error {
-  color: #feb2b2;
-  margin: 0;
-  font-size: 0.9rem;
-}
-
-.primary-action {
+.form-button {
+  width: 100%;
+  max-width: 680px;
+  height: 90px;
+  border-radius: 100px;
   border: none;
-  border-radius: 999px;
-  padding: 0.85rem 1rem;
-  background: linear-gradient(135deg, #f97316, #facc15);
-  color: #111;
-  font-weight: 700;
+  background: #FFB500;
   cursor: pointer;
-  transition: opacity 0.2s ease;
+  color: #212023;
+  font-size: 32px;
+  font-weight: 500;
+  display: flex;
+  align-items: center;
+  justify-content: center;
 }
-
-.primary-action:hover:not(:disabled) {
-  opacity: 0.9;
-}
-
-.primary-action:disabled {
-  opacity: 0.6;
+.form-button:disabled {
+  opacity: 0.7;
   cursor: not-allowed;
 }
-
-.auth-switch {
-  text-align: center;
-  font-size: 0.9rem;
-  color: rgba(245, 245, 247, 0.75);
+.login-prompt {
+  display: flex;
+  gap: 0.5rem;
+  align-items: center;
+  justify-content: center;
+  margin-top: 1.5rem;
+  flex-wrap: wrap;
 }
-
-.auth-switch button {
-  border: none;
-  background: transparent;
-  color: #f97316;
-  font-weight: 600;
+.prompt-text {
+  color: #212023;
+  font-size: 32px;
+}
+.prompt-link {
+  color: #FA7921;
+  font-size: 32px;
+  font-weight: 500;
   cursor: pointer;
-  margin-left: 0.35rem;
+  background: none;
+  border: none;
+  padding: 0;
+  font-family: 'Fredoka', sans-serif;
+}
+.signup-footer {
+  background: #212023;
+  border-top-left-radius: 50px;
+  padding: 2rem 4rem;
+}
+.footer-content {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 20px;
+  flex-wrap: wrap;
+}
+.footer-logo {
+  height: 180px;
+  padding-left: 60px;
+}
+.footer-by {
+  color: #E6ECEF;
+  font-size: 40px;
+  font-weight: 500;
+  padding-right: 40px;
+  padding-left: 15px;
+}
+.footer-brand {
+  display: flex;
+  align-items: center;
+  gap: 19px;
+}
+.brand-seal {
+  width: 100px;
+}
+.brand-name {
+  color: #E6ECEF;
+  font-size: 40px;
+  font-weight: 500;
+  line-height: 1.1;
+  text-align: left;
 }
 </style>

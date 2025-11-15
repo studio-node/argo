@@ -1,160 +1,72 @@
 <script setup>
-import { inject, computed } from 'vue'
-import { useRouter } from 'vue-router'
+import Header from '@/components/Header.vue'
+import HeroSection from '@/components/HeroSection.vue'
+import FeatureCard from '@/components/FeatureCard.vue'
+import Footer from '@/components/Footer.vue'
 
-const router = useRouter()
-const coords = inject('userCoords', null)
-const locationStatus = inject('locationStatus', null)
-const locationError = inject('locationError', null)
+import logoWordmark from '@/assets/figma/logo-wordmark.png'
+import footerSeal from '@/assets/figma/footer-seal.png'
 
-const featuredDrops = [
+const footerHighlights = [
   {
-    id: 'pier-27',
-    name: 'Pier 27 Launchpad',
-    distance: '0.2 mi',
-    window: 'Every 15 min',
-    blurb: 'A floating sculpture that responds to the tide.'
+    eyebrow: 'Studio',
+    title: 'Node',
+    description: 'The AR control room for Code Camp creators.',
+    image: logoWordmark,
+    alt: 'Code Camp glyph'
   },
   {
-    id: 'museum-walk',
-    name: 'Museum Walk Chronicle',
-    distance: '1.1 mi',
-    window: 'All day',
-    blurb: 'Narrated sculptures and volumetric blooms.'
-  },
-  {
-    id: 'sky-garden',
-    name: 'Sky Garden Observatory',
-    distance: '1.8 mi',
-    window: 'Opens 6 pm',
-    blurb: 'Light ribbons guide you to each rooftop beat.'
+    eyebrow: 'By',
+    title: 'Code Camp',
+    description: 'Spatial login surfaces built for dev mode.',
+    image: footerSeal,
+    alt: 'Code Camp seal'
   }
 ]
-
-const formattedCoords = computed(() => {
-  if (!coords?.value) return 'Unknown location'
-  return `${coords.value.lat.toFixed(3)}, ${coords.value.lng.toFixed(3)}`
-})
-
-const primaryStatus = computed(() => {
-  if (!locationStatus) return 'idle'
-  return locationStatus.value
-})
-
-const openArView = (dropId) => {
-  router.push({ name: 'ar', params: { vpsLocationId: dropId } })
-}
 </script>
 
 <template>
-  <section class="home-view">
-    <header class="home-header">
-      <p class="microcopy">Current coords</p>
-      <p class="coordinate" :aria-live="primaryStatus === 'success' ? 'polite' : 'off'">
-        {{ primaryStatus === 'success' ? formattedCoords : 'Searching…' }}
-      </p>
-      <p v-if="locationError?.value" class="error-text">{{ locationError.value }}</p>
-    </header>
-
-    <ul class="drop-list">
-      <li v-for="drop in featuredDrops" :key="drop.id" class="drop-card">
-        <div>
-          <p class="microcopy">{{ drop.distance }} · {{ drop.window }}</p>
-          <h3>{{ drop.name }}</h3>
-          <p>{{ drop.blurb }}</p>
-        </div>
-        <button type="button" class="ghost-btn" @click="openArView(drop.id)">
-          Launch
-        </button>
-      </li>
-    </ul>
-  </section>
+  <div class="home-page">
+    <Header />
+    <HeroSection />
+    <Footer>
+      <div class="footer-grid">
+        <FeatureCard
+          v-for="highlight in footerHighlights"
+          :key="highlight.title"
+          :eyebrow="highlight.eyebrow"
+          :title="highlight.title"
+          :description="highlight.description"
+          variant="dark"
+        >
+          <template #media>
+            <img :src="highlight.image" :alt="highlight.alt" />
+          </template>
+        </FeatureCard>
+      </div>
+      <p class="footer-note">Immersive login surfaces inspired by the CODE CAMP frame.</p>
+    </Footer>
+  </div>
 </template>
 
 <style scoped>
-.home-view {
-  display: flex;
-  flex-direction: column;
-  gap: 1.25rem;
-  color: #f5f5f7;
+.home-page {
+  min-height: 100vh;
+  background: var(--bg-primary);
+  padding-bottom: 4rem;
 }
 
-.home-header {
-  background: rgba(255, 255, 255, 0.04);
-  border-radius: 20px;
-  padding: 1rem 1.25rem;
-  border: 1px solid rgba(255, 255, 255, 0.08);
-}
-
-.microcopy {
-  font-size: 0.75rem;
-  letter-spacing: 0.18em;
-  text-transform: uppercase;
-  color: rgba(248, 249, 252, 0.6);
-}
-
-.coordinate {
-  font-size: 1.125rem;
-  font-weight: 600;
-  margin-top: 0.35rem;
-  color: #fdfdff;
-}
-
-.error-text {
-  margin-top: 0.35rem;
-  color: #feb2b2;
-  font-size: 0.9rem;
-}
-
-.drop-list {
-  list-style: none;
-  display: flex;
-  flex-direction: column;
-  gap: 0.75rem;
-  padding: 0;
-  margin: 0;
-}
-
-.drop-card {
-  border-radius: 20px;
-  border: 1px solid rgba(255, 255, 255, 0.08);
-  background: #2f2e33;
-  padding: 1rem 1.25rem;
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
+.footer-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
   gap: 1rem;
 }
 
-.drop-card h3 {
-  margin: 0.35rem 0 0.2rem;
-  color: #f9f7ff;
-}
-
-.drop-card p {
-  margin: 0;
-  color: rgba(248, 249, 252, 0.7);
-}
-
-.ghost-btn {
-  border: none;
-  border-radius: 999px;
-  padding: 0.45rem 1rem;
-  background: rgba(255, 255, 255, 0.08);
-  color: #f4f4f8;
-  font-weight: 600;
-  cursor: pointer;
-}
-
-@media (max-width: 640px) {
-  .drop-card {
-    flex-direction: column;
-    align-items: flex-start;
-  }
-
-  .ghost-btn {
-    width: 100%;
-    text-align: center;
-  }
+.footer-note {
+  margin-top: 1.5rem;
+  color: rgba(230, 236, 239, 0.75);
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  font-size: 0.8rem;
 }
 </style>

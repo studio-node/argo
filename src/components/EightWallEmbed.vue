@@ -10,8 +10,11 @@ const emit = defineEmits(['experience-ready'])
 const iframeRef = ref(null)
 
 // 1. Initialize your composables
-const { findVPSLocationByEighthWallId } = useVPSLocation()
+const { findVPSLocationByEighthWallId, currentVPSLocation } = useVPSLocation()
 const { createPlacedObjectFromPlacement, loading, error } = usePersistence()
+
+// Track current VPS location ID
+const currentVpsLocationId = ref(null)
 
 /**
  * Handles the 'message' event from the 8th Wall iframe.
@@ -46,6 +49,9 @@ const handleMessage = async (event) => {
       if (vpsError || !vpsLocation) {
         throw vpsError || new Error(`No vps_location found for ID: ${vpsId}`)
       }
+
+      // Update current location tracking
+      currentVpsLocationId.value = vpsLocation.id
 
       // Step 2: Create the placed object row
       const { data: newObject, error: createError } = 
@@ -109,7 +115,8 @@ const sendInitDataToIframe = async () => {
       type: 'INIT_DATA',
       payload: {
         userId,
-        placedObjects: placedObjects || []
+        placedObjects: placedObjects || [],
+        vps_location_id: currentVpsLocationId.value || currentVPSLocation.value?.id || null
       }
     }
 

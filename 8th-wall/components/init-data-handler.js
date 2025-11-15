@@ -23,7 +23,7 @@ export const initDataHandlerComponent = {
 
       // Handle INIT_DATA messages from parent Vue app
       if (eventData && eventData.type === 'INIT_DATA') {
-        const { userId, placedObjects } = eventData.payload || {}
+        const { userId, placedObjects, vps_location_id } = eventData.payload || {}
 
         if (!userId) {
           console.warn('[8THWALL] Init data received but userId is missing')
@@ -33,7 +33,8 @@ export const initDataHandlerComponent = {
         // Store data on window object for global access
         window._initData = {
           userId,
-          placedObjects: placedObjects || []
+          placedObjects: placedObjects || [],
+          vps_location_id: vps_location_id || null
         }
 
         console.log(
@@ -41,7 +42,8 @@ export const initDataHandlerComponent = {
           'color:#4caf50; font-weight:bold;',
           {
             userId,
-            placedObjectsCount: placedObjects?.length || 0
+            placedObjectsCount: placedObjects?.length || 0,
+            vps_location_id: vps_location_id || 'not provided'
           }
         )
 

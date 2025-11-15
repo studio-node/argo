@@ -44,6 +44,10 @@ AFRAME.registerComponent('tap-place', tapPlaceComponent)
 import {initDataHandlerComponent} from './components/init-data-handler'
 AFRAME.registerComponent('init-data-handler', initDataHandlerComponent)
 
+// Load placed objects component (loads and displays placed objects filtered by location)
+import {loadPlacedObjectsComponent} from './components/load-placed-objects'
+AFRAME.registerComponent('load-placed-objects', loadPlacedObjectsComponent)
+
 // Load scene using URL params
 // sample URL: https://workspace.8thwall.app/vps-beta/?scene=detect-mesh
 const params = new URLSearchParams(document.location.search.substring(1))

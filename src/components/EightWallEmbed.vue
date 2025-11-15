@@ -100,7 +100,6 @@ const sendInitDataToIframe = async () => {
       .from('placed_objects')
       .select(`
         *,
-        model:models(*),
         user:profiles(id, username, avatar_url)
       `)
       .eq('vps_location_id', locationId)

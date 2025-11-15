@@ -3,23 +3,46 @@ import { ref } from 'vue'
 
 const emit = defineEmits(['authenticated'])
 
-const mode = ref('login')
-const email = ref('')
-const password = ref('')
+const mode = ref('signup')
+const form = ref({
+  username: '',
+  email: '',
+  password: ''
+})
 const error = ref('')
 
-const switchMode = (target) => {
+const swapMode = (target) => {
   mode.value = target
   error.value = ''
 }
 
-const handleSubmit = () => {
-  if (!email.value.trim() || !password.value.trim()) {
-    error.value = 'Please enter your email and password.'
-    return
+const clearForm = () => {
+  form.value = {
+    username: '',
+    email: '',
+    password: ''
   }
+}
+
+const validate = () => {
+  if (!form.value.email.trim() || !form.value.password.trim()) {
+    error.value = 'Email and password are required.'
+    return false
+  }
+
+  if (mode.value === 'signup' && !form.value.username.trim()) {
+    error.value = 'Choose a username to continue.'
+    return false
+  }
+
   error.value = ''
-  emit('authenticated')
+  return true
+}
+
+const handleSubmit = () => {
+  if (!validate()) return
+  emit('authenticated', { ...form.value, mode: mode.value })
+  clearForm()
 }
 </script>
 
@@ -28,31 +51,26 @@ const handleSubmit = () => {
     <div class="auth-panel">
       <header>
         <h1>Code Camp Experience</h1>
-        <p>Sign in to launch the experience.</p>
+        <p v-if="mode === 'signup'">Create your account to get started.</p>
+        <p v-else>Welcome back. Sign in to continue.</p>
       </header>
-      <div class="auth-toggle" role="tablist">
-        <button
-          role="tab"
-          type="button"
-          :class="{ active: mode === 'login' }"
-          @click="switchMode('login')"
-        >
-          Log In
-        </button>
-        <button
-          role="tab"
-          type="button"
-          :class="{ active: mode === 'signup' }"
-          @click="switchMode('signup')"
-        >
-          Sign Up
-        </button>
-      </div>
       <form @submit.prevent="handleSubmit" novalidate>
+        <label v-if="mode === 'signup'">
+          <span>Username</span>
+          <input
+            v-model="form.username"
+            type="text"
+            minlength="2"
+            maxlength="30"
+            autocomplete="off"
+            placeholder="coder123"
+            required
+          />
+        </label>
         <label>
           <span>Email</span>
           <input
-            v-model="email"
+            v-model="form.email"
             type="email"
             inputmode="email"
             placeholder="you@email.com"
@@ -62,7 +80,7 @@ const handleSubmit = () => {
         <label>
           <span>Password</span>
           <input
-            v-model="password"
+            v-model="form.password"
             type="password"
             placeholder="••••••••"
             required
@@ -73,6 +91,13 @@ const handleSubmit = () => {
           {{ mode === 'login' ? 'Log In' : 'Create Account' }}
         </button>
       </form>
+      <p class="auth-switch">
+        <span v-if="mode === 'login'">Need an account?</span>
+        <span v-else>Already have an account?</span>
+        <button type="button" @click="swapMode(mode === 'login' ? 'signup' : 'login')">
+          {{ mode === 'login' ? 'Sign up' : 'Log in' }}
+        </button>
+      </p>
     </div>
   </main>
 </template>
@@ -109,30 +134,6 @@ header h1 {
 header p {
   margin: 0;
   color: rgba(245, 245, 247, 0.75);
-}
-
-.auth-toggle {
-  display: inline-flex;
-  border-radius: 999px;
-  background: rgba(255, 255, 255, 0.05);
-  padding: 0.3rem;
-  gap: 0.35rem;
-}
-
-.auth-toggle button {
-  border: none;
-  border-radius: 999px;
-  padding: 0.45rem 1.25rem;
-  background: transparent;
-  color: rgba(245, 245, 247, 0.7);
-  font-weight: 600;
-  cursor: pointer;
-  transition: background 0.2s ease, color 0.2s ease;
-}
-
-.auth-toggle button.active {
-  background: #f5f5f7;
-  color: #212023;
 }
 
 form {
@@ -182,5 +183,20 @@ input:focus {
 
 .primary-action:hover {
   opacity: 0.9;
+}
+
+.auth-switch {
+  text-align: center;
+  font-size: 0.9rem;
+  color: rgba(245, 245, 247, 0.75);
+}
+
+.auth-switch button {
+  border: none;
+  background: transparent;
+  color: #f97316;
+  font-weight: 600;
+  cursor: pointer;
+  margin-left: 0.35rem;
 }
 </style>

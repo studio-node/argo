@@ -1,56 +1,60 @@
 import { ref, computed } from 'vue'
-import { supabase } from '@/lib/supabase'
+// Make sure this path is correct for your project structure
+// e.g., '@/lib/supabase' or '../lib/supabase'
+import { supabase } from '@/lib/supabase' 
 
+// These are outside the function, so they act as a global singleton state
 const user = ref(null)
 const session = ref(null)
 const loading = ref(false)
 const error = ref(null)
 
+// Initialize auth state once
+supabase.auth.getSession().then(({ data, error: err }) => {
+  if (err) {
+    error.value = err.message
+    return
+  }
+  session.value = data.session
+  user.value = data.session?.user ?? null
+})
+
+// Listen for auth changes
+supabase.auth.onAuthStateChange((_event, newSession) => {
+  session.value = newSession
+  user.value = newSession?.user ?? null
+})
+
 export function useAuth() {
-  // Initialize auth state
-  supabase.auth.getSession().then(({ data, error: err }) => {
-    if (err) {
-      error.value = err.message
-      return
-    }
-    session.value = data.session
-    user.value = data.session?.user ?? null
-  })
-
-  // Listen for auth changes
-  supabase.auth.onAuthStateChange((_event, newSession) => {
-    session.value = newSession
-    user.value = newSession?.user ?? null
-  })
-
   const isAuthenticated = computed(() => !!user.value)
 
+  /**
+   * Sign a new user up
+   * This now passes the username in options.data,
+   * which our SQL trigger 'handle_new_user' will use to create the profile.
+   */
   const signUp = async (email, password, username) => {
     loading.value = true
     error.value = null
     
     try {
-      // Sign up user
-      const { data: authData, error: authError } = await supabase.auth.signUp({
+      const { data, error: authError } = await supabase.auth.signUp({
         email,
-        password
+        password,
+        options: {
+          data: {
+            // This 'data' object is passed to your SQL trigger
+            username: username
+          }
+        }
       })
 
       if (authError) throw authError
 
-      // Create profile
-      if (authData.user) {
-        const { error: profileError } = await supabase
-          .from('profiles')
-          .insert({
-            id: authData.user.id,
-            username: username || email.split('@')[0]
-          })
+      // With email verification off, the user is signed in.
+      // The onAuthStateChange listener will automatically update the user/session refs.
+      return { user: data.user, error: null }
 
-        if (profileError) throw profileError
-      }
-
-      return { user: authData.user, error: null }
     } catch (err) {
       error.value = err.message
       return { user: null, error: err }
@@ -59,6 +63,9 @@ export function useAuth() {
     }
   }
 
+  /**
+   * Sign an existing user in
+   */
   const signIn = async (email, password) => {
     loading.value = true
     error.value = null
@@ -70,7 +77,8 @@ export function useAuth() {
       })
 
       if (err) throw err
-
+      
+      // onAuthStateChange will handle setting the user/session
       return { user: data.user, error: null }
     } catch (err) {
       error.value = err.message
@@ -80,6 +88,9 @@ export function useAuth() {
     }
   }
 
+  /**
+   * Sign the current user out
+   */
   const signOut = async () => {
     loading.value = true
     error.value = null
@@ -88,8 +99,7 @@ export function useAuth() {
       const { error: err } = await supabase.auth.signOut()
       if (err) throw err
 
-      user.value = null
-      session.value = null
+      // onAuthStateChange will handle setting user/session to null
       return { error: null }
     } catch (err) {
       error.value = err.message
@@ -99,6 +109,7 @@ export function useAuth() {
     }
   }
 
+  // Return all the reactive state and functions
   return {
     user,
     session,
@@ -110,4 +121,3 @@ export function useAuth() {
     signOut
   }
 }
-

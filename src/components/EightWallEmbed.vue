@@ -98,10 +98,7 @@ const sendInitDataToIframe = async () => {
     // Fetch ALL placed objects with joins
     const { data: placedObjects, error } = await supabase
       .from('placed_objects')
-      .select(`
-        *,
-        user:profiles(id, username, avatar_url)
-      `)
+      .select(`*`)
       .eq('vps_location_id', locationId)
       .order('created_at', { ascending: false });
 

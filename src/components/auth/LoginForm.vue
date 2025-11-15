@@ -309,16 +309,18 @@ const handleSubmit = async () => {
 /* Mobile Responsive Styles */
 @media (max-width: 768px) {
   .login-page {
-    padding: 0.5rem;
+    padding: 0;
     align-items: flex-start;
     min-height: 100vh;
     overflow-y: auto;
   }
   
   .login-shell {
-    border-radius: 30px;
-    margin: auto;
-    min-height: auto;
+    border-radius: 0;
+    margin: 0;
+    min-height: 100vh;
+    width: 100%;
+    max-width: 100%;
   }
   
   .signup-header {
@@ -327,7 +329,7 @@ const handleSubmit = async () => {
   }
   
   .header-curve {
-    border-bottom-left-radius: 30px;
+    border-bottom-left-radius: 0;
   }
   
   .header-logo-container {
@@ -394,7 +396,7 @@ const handleSubmit = async () => {
   }
   
   .signup-footer {
-    border-top-left-radius: 30px;
+    border-top-left-radius: 0;
     padding: 1rem 0.75rem;
     flex-shrink: 0;
   }

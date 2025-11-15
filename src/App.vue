@@ -6,7 +6,7 @@ import AuthPage from '@/components/AuthPage.vue'
 
 const showSplash = ref(true)
 const isAuthenticated = ref(false)
-let splashTimer
+const splashTimer = ref(null)
 
 const preventScroll = () => {
   document.documentElement.style.overflow = 'hidden'
@@ -34,13 +34,13 @@ const handleAuthenticated = () => {
 
 onMounted(() => {
   preventScroll()
-  splashTimer = window.setTimeout(hideSplash, 5000)
+  splashTimer.value = window.setTimeout(hideSplash, 5000)
 })
 
 onBeforeUnmount(() => {
   allowScroll()
-  if (splashTimer) {
-    clearTimeout(splashTimer)
+  if (splashTimer.value) {
+    clearTimeout(splashTimer.value)
   }
 })
 </script>
@@ -64,7 +64,7 @@ onBeforeUnmount(() => {
       <AuthPage @authenticated="handleAuthenticated" />
     </section>
 
-    <section v-if="!showSplash && isAuthenticated" class="embed-shell">
+    <section v-else-if="!showSplash && isAuthenticated" class="embed-shell">
       <EightWallEmbed />
     </section>
   </div>
@@ -120,4 +120,5 @@ onBeforeUnmount(() => {
   width: 100vw;
   height: 100vh;
 }
+
 </style>

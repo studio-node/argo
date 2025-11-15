@@ -173,13 +173,14 @@ onBeforeUnmount(() => {
   flex-direction: column;
   align-items: center;
   justify-content: center;
-  background: #E7ECEF;
+  background-color: #ECEEF1;
   color: #0f172a;
   z-index: 40;
 }
 
 .post-auth {
   z-index: 30;
+  background-color: #ECEEF1;
 }
 
 .splash-video {

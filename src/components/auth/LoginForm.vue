@@ -17,127 +17,140 @@ const handleSubmit = async () => {
 </script>
 
 <template>
-  <div class="login-form">
-    <h2>Login</h2>
-    <form @submit.prevent="handleSubmit">
-      <div class="form-group">
-        <label for="email">Email</label>
+  <div class="auth-panel">
+    <header>
+      <h1>Welcome Back</h1>
+      <p>Sign in to continue.</p>
+    </header>
+
+    <form @submit.prevent="handleSubmit" novalidate>
+      <label>
+        <span>Email</span>
         <input
-          id="email"
           v-model="email"
           type="email"
+          inputmode="email"
+          placeholder="you@email.com"
           required
-          placeholder="Enter your email"
         />
-      </div>
-      <div class="form-group">
-        <label for="password">Password</label>
+      </label>
+      <label>
+        <span>Password</span>
         <input
-          id="password"
           v-model="password"
           type="password"
+          placeholder="••••••••"
           required
-          placeholder="Enter your password"
         />
-      </div>
-      <div v-if="error" class="error-message">{{ error }}</div>
-      <button type="submit" :disabled="loading" class="submit-btn">
-        {{ loading ? 'Logging in...' : 'Login' }}
+      </label>
+
+      <p v-if="error" class="error">{{ error }}</p>
+      
+      <button class="primary-action" type="submit" :disabled="loading">
+        {{ loading ? 'Logging in...' : 'Log In' }}
       </button>
     </form>
-    <p class="switch-form">
-      Don't have an account?
-      <a href="#" @click.prevent="$emit('switch-to-signup')">Sign up</a>
+
+    <p class="auth-switch">
+      <span>Need an account?</span>
+      <button type="button" @click="$emit('switch-to-signup')">
+        Sign up
+      </button>
     </p>
   </div>
 </template>
 
 <style scoped>
-.login-form {
-  max-width: 400px;
-  margin: 0 auto;
-  padding: 2rem;
-  background: white;
-  border-radius: 8px;
-  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+/* Styles copied directly from parkersAuthPage.vue */
+.auth-panel {
+  width: min(420px, 100%);
+  background: rgba(33, 32, 35, 0.85);
+  border: 1px solid rgba(255, 255, 255, 0.05);
+  border-radius: 28px;
+  padding: clamp(1.5rem, 4vw, 2.25rem);
+  display: flex;
+  flex-direction: column;
+  gap: 1.25rem;
+  box-shadow: 0 30px 90px rgba(0, 0, 0, 0.45);
 }
 
-h2 {
-  margin-bottom: 1.5rem;
-  text-align: center;
-  color: #333;
+header h1 {
+  margin: 0 0 0.25rem 0;
+  font-size: clamp(1.6rem, 5vw, 2rem);
+  color: #f5f5f7;
 }
 
-.form-group {
-  margin-bottom: 1rem;
+header p {
+  margin: 0;
+  color: rgba(245, 245, 247, 0.75);
+}
+
+form {
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
 }
 
 label {
-  display: block;
-  margin-bottom: 0.5rem;
-  color: #555;
-  font-weight: 500;
+  display: flex;
+  flex-direction: column;
+  gap: 0.35rem;
+  font-size: 0.95rem;
+  color: rgba(245, 245, 247, 0.75);
 }
 
 input {
-  width: 100%;
-  padding: 0.75rem;
-  border: 1px solid #ddd;
-  border-radius: 4px;
+  border-radius: 16px;
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  background: rgba(255, 255, 255, 0.04);
+  padding: 0.85rem 1rem;
+  color: #f5f5f7;
   font-size: 1rem;
-  box-sizing: border-box;
 }
 
 input:focus {
-  outline: none;
-  border-color: #007bff;
+  outline: 2px solid rgba(255, 255, 255, 0.25);
+  outline-offset: 2px;
 }
 
-.error-message {
-  color: #dc3545;
-  margin-bottom: 1rem;
-  padding: 0.5rem;
-  background: #f8d7da;
-  border-radius: 4px;
+.error {
+  color: #feb2b2;
+  margin: 0;
   font-size: 0.9rem;
 }
 
-.submit-btn {
-  width: 100%;
-  padding: 0.75rem;
-  background: #007bff;
-  color: white;
+.primary-action {
   border: none;
-  border-radius: 4px;
-  font-size: 1rem;
-  font-weight: 500;
+  border-radius: 999px;
+  padding: 0.85rem 1rem;
+  background: linear-gradient(135deg, #f97316, #facc15);
+  color: #111;
+  font-weight: 700;
   cursor: pointer;
-  transition: background 0.2s;
+  transition: opacity 0.2s ease;
 }
 
-.submit-btn:hover:not(:disabled) {
-  background: #0056b3;
+.primary-action:hover:not(:disabled) {
+  opacity: 0.9;
 }
 
-.submit-btn:disabled {
+.primary-action:disabled {
   opacity: 0.6;
   cursor: not-allowed;
 }
 
-.switch-form {
-  margin-top: 1rem;
+.auth-switch {
   text-align: center;
-  color: #666;
+  font-size: 0.9rem;
+  color: rgba(245, 245, 247, 0.75);
 }
 
-.switch-form a {
-  color: #007bff;
-  text-decoration: none;
-  font-weight: 500;
-}
-
-.switch-form a:hover {
-  text-decoration: underline;
+.auth-switch button {
+  border: none;
+  background: transparent;
+  color: #f97316;
+  font-weight: 600;
+  cursor: pointer;
+  margin-left: 0.35rem;
 }
 </style>
-

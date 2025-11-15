@@ -96,14 +96,15 @@ const sendInitDataToIframe = async () => {
     const userId = userData.user.id
 
     // Fetch ALL placed objects with joins
-    const { data: placedObjects, error: objectsError } = await supabase
+    const { data: placedObjects, error } = await supabase
       .from('placed_objects')
       .select(`
         *,
         model:models(*),
         user:profiles(id, username, avatar_url)
       `)
-      .order('created_at', { ascending: false })
+      .eq('vps_location_id', locationId)
+      .order('created_at', { ascending: false });
 
     if (objectsError) {
       console.error('[Vue] Failed to fetch placed objects:', objectsError)

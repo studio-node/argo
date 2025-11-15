@@ -1,6 +1,6 @@
 <script setup>
-import { onMounted, onUnmounted }from 'vue'
-import { useVPSLocation } from '@/composables/useVPSLocation-helper'
+import { onMounted, onUnmounted } from 'vue'
+import { useVPSLocation } from '@/composables/useVPSLocation'
 import { usePersistence } from '@/composables/usePersistence'
 
 const emit = defineEmits(['experience-ready'])

@@ -153,13 +153,10 @@ onUnmounted(() => {
 <template>
   <div class="embed-container">
     <iframe
-      ref="iframeRef"
-      src="https://studionode.8thwall.app/hunt-scavenger/"
-      allowfullscreen
-      allow="camera; microphone; geolocation; accelerometer; magnetometer; gyroscope; autoplay; clipboard-read; clipboard-write; fullscreen"
-      title="8th Wall Experience"
-      @load="handleLoad"
-    ></iframe>
+  src="https://studionode.8thwall.app/argo/"
+  allowfullscreen
+  allow="camera; microphone; geolocation; accelerometer; magnetometer; gyroscope; autoplay; clipboard-read; clipboard-write; fullscreen"
+></iframe>
 
     <!-- Optional: Show a loading state when saving -->
     <div v-if="loading" class="loading-overlay">

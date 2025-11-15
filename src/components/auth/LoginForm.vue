@@ -311,14 +311,18 @@ const handleSubmit = async () => {
 @media (max-width: 768px) {
   .login-page {
     padding: 0.5rem;
+    align-items: flex-start;
+    min-height: 100vh;
+    overflow-y: auto;
   }
   
   .login-shell {
     border-radius: 30px;
+    margin: auto;
   }
   
   .signup-header {
-    height: 150px;
+    height: 120px;
   }
   
   .header-curve {
@@ -326,88 +330,92 @@ const handleSubmit = async () => {
   }
   
   .header-logo-container {
-    padding: 1rem;
+    padding: 0.75rem;
   }
   
   .signup-main {
-    padding: 1.5rem 1rem;
-    gap: 1rem;
+    padding: 1rem 0.75rem;
+    gap: 0.75rem;
   }
   
   .main-heading {
-    font-size: 36px;
+    font-size: 32px;
+    margin-bottom: 0.25rem;
   }
   
   .main-subtitle {
-    font-size: 16px;
+    font-size: 14px;
+    margin-bottom: 0.5rem;
   }
   
   .signup-form {
-    padding: 1.5rem 1rem;
+    padding: 1rem 0.75rem;
     border-radius: 30px;
-    gap: 1rem;
+    gap: 0.75rem;
+    margin-top: 0.5rem;
   }
   
   .form-group {
-    gap: 0.375rem;
+    gap: 0.25rem;
   }
   
   .form-label {
-    font-size: 16px;
+    font-size: 14px;
   }
   
   .form-input {
-    height: 50px;
-    padding: 0 1rem;
+    height: 44px;
+    padding: 0 0.75rem;
     font-size: 16px;
-    border-radius: 15px;
+    border-radius: 12px;
   }
   
   .form-button {
-    height: 50px;
-    font-size: 18px;
-    border-radius: 25px;
+    height: 44px;
+    font-size: 16px;
+    border-radius: 22px;
+    margin-top: 0.25rem;
   }
   
   .login-prompt {
-    margin-top: 1rem;
+    margin-top: 0.75rem;
     gap: 0.25rem;
   }
   
   .prompt-text {
-    font-size: 14px;
+    font-size: 13px;
   }
   
   .prompt-link {
-    font-size: 14px;
+    font-size: 13px;
   }
   
   .signup-footer {
     border-top-left-radius: 30px;
-    padding: 1.5rem 1rem;
+    padding: 1rem 0.75rem;
   }
   
   .footer-content {
-    gap: 10px;
+    gap: 8px;
     flex-direction: column;
   }
   
   .footer-logo {
-    height: 80px;
+    height: 60px;
     padding-left: 0;
   }
   
   .footer-by {
-    font-size: 18px;
+    font-size: 14px;
     padding: 0;
   }
   
   .brand-seal {
-    width: 50px;
+    width: 40px;
   }
   
   .brand-name {
-    font-size: 18px;
+    font-size: 14px;
   }
 }
 </style>

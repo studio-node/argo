@@ -306,4 +306,108 @@ const handleSubmit = async () => {
   line-height: 1.1;
   text-align: left;
 }
+
+/* Mobile Responsive Styles */
+@media (max-width: 768px) {
+  .login-page {
+    padding: 0.5rem;
+  }
+  
+  .login-shell {
+    border-radius: 30px;
+  }
+  
+  .signup-header {
+    height: 150px;
+  }
+  
+  .header-curve {
+    border-bottom-left-radius: 30px;
+  }
+  
+  .header-logo-container {
+    padding: 1rem;
+  }
+  
+  .signup-main {
+    padding: 1.5rem 1rem;
+    gap: 1rem;
+  }
+  
+  .main-heading {
+    font-size: 36px;
+  }
+  
+  .main-subtitle {
+    font-size: 16px;
+  }
+  
+  .signup-form {
+    padding: 1.5rem 1rem;
+    border-radius: 30px;
+    gap: 1rem;
+  }
+  
+  .form-group {
+    gap: 0.375rem;
+  }
+  
+  .form-label {
+    font-size: 16px;
+  }
+  
+  .form-input {
+    height: 50px;
+    padding: 0 1rem;
+    font-size: 16px;
+    border-radius: 15px;
+  }
+  
+  .form-button {
+    height: 50px;
+    font-size: 18px;
+    border-radius: 25px;
+  }
+  
+  .login-prompt {
+    margin-top: 1rem;
+    gap: 0.25rem;
+  }
+  
+  .prompt-text {
+    font-size: 14px;
+  }
+  
+  .prompt-link {
+    font-size: 14px;
+  }
+  
+  .signup-footer {
+    border-top-left-radius: 30px;
+    padding: 1.5rem 1rem;
+  }
+  
+  .footer-content {
+    gap: 10px;
+    flex-direction: column;
+  }
+  
+  .footer-logo {
+    height: 80px;
+    padding-left: 0;
+  }
+  
+  .footer-by {
+    font-size: 18px;
+    padding: 0;
+  }
+  
+  .brand-seal {
+    width: 50px;
+  }
+  
+  .brand-name {
+    font-size: 18px;
+  }
+}
 </style>

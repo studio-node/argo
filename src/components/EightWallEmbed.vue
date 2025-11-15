@@ -1,7 +1,7 @@
 <template>
   <div class="embed-container">
     <iframe
-      src="https://parkerbryan.8thwall.app/argo/"
+      src="https://studionode.8thwall.app/vps-tap-place/"
       allowfullscreen
       allow="camera; microphone; geolocation; accelerometer; magnetometer; gyroscope; autoplay; clipboard-read; clipboard-write; fullscreen"
       title="8th Wall Experience"

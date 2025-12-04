@@ -150,7 +150,7 @@ onUnmounted(() => {
 <template>
   <div class="embed-container">
     <iframe
-  src="https://studionode.8thwall.app/argo/"
+  src="https://studionode.8thwall.app/updated/"
   allowfullscreen
   allow="camera; microphone; geolocation; accelerometer; magnetometer; gyroscope; autoplay; clipboard-read; clipboard-write; fullscreen"
 ></iframe>
